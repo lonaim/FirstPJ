@@ -26,8 +26,8 @@ public class ArmSubsystem extends SubsystemBase {
 
   private TalonFX motor;
 
-  public void setMotor(double collectmotorspeed){
-    this.motor.set(collectmotorspeed);
+  public void setMotor(double speed){
+    this.motor.set(speed);
   }
 
   public double getPlace(){

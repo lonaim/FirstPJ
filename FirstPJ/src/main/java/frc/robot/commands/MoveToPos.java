@@ -5,16 +5,30 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.ArmConstants;
+import frc.robot.subsystems.ArmSubsystem;
 
 public class MoveToPos extends CommandBase {
+  private final ArmSubsystem arm = ArmSubsystem.getInstance();
+  double pos;
+
   /** Creates a new MoveToPos. */
-  public MoveToPos() {
+  public MoveToPos(double pos) {
     // Use addRequirements() here to declare subsystem dependencies.
+    this.addRequirements(arm);
+    this.pos = pos;
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    if(arm.getPlace()<pos){
+      arm.setMotor(ArmConstants.CollectMotorSpeed);
+    }
+    if(arm.getPlace()>pos){
+      arm.setMotor(-1*(ArmConstants.CollectMotorSpeed));
+    }
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -22,11 +36,13 @@ public class MoveToPos extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    arm.setMotor(0);
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return arm.getPlace()==pos;
   }
 }
